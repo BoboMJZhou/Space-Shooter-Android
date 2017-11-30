@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     private Rigidbody rb;
+    private Touch finger;
     public float speed;
     bool currentisAndroid = false;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+
 #if UNITY_EDITOR
         currentisAndroid = false;
 #else
@@ -20,9 +22,10 @@ public class PlayerController : MonoBehaviour {
     {
         if(currentisAndroid)
         {
-            if (Input.GetTouch(0).position.x < Screen.width / 2 && Input.GetTouch(0).phase == TouchPhase.Stationary)
+            finger = Input.GetTouch(0);
+            if (finger.position.x < (this.transform.position.x + Screen.width / 2) && finger.phase == TouchPhase.Stationary)
                 MoveLeft();
-            else if (Input.GetTouch(0).position.x > Screen.width / 2 && Input.GetTouch(0).phase == TouchPhase.Stationary)
+            else if (finger.position.x > (this.transform.position.x + Screen.width / 2) && finger.phase == TouchPhase.Stationary)
                 MoveRight();
             else
                 MoveStop();
@@ -40,13 +43,13 @@ public class PlayerController : MonoBehaviour {
 
     private void MoveLeft()
     {
-        Vector3 movement = new Vector3(-1, 0.0f, 0.0f);
+        Vector3 movement = new Vector3(-1.0f, 0.0f, 0.0f);
         rb.velocity = movement * speed;
     }
 
     private void MoveRight()
     {
-        Vector3 movement = new Vector3(1, 0.0f, 0.0f);
+        Vector3 movement = new Vector3(1.0f, 0.0f, 0.0f);
         rb.velocity = movement * speed;
     }
 
