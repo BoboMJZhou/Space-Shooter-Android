@@ -6,7 +6,11 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody rb;
     private Touch finger;
     public float speed;
+    public float fire_rate;
+    public GameObject shot;
+    public Transform shot_spawn;
     bool currentisAndroid = false;
+    private float nextfire = 0.0f;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -16,6 +20,15 @@ public class PlayerController : MonoBehaviour {
 #else
         currentisAndroid = true;
 #endif
+    }
+
+    private void Update()
+    {
+        if(Time.time > nextfire)
+        {
+            nextfire = Time.time + fire_rate;
+            Instantiate(shot, shot_spawn.position, shot_spawn.rotation);
+        }
     }
 
     private void FixedUpdate()
