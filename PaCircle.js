@@ -1,3 +1,7 @@
+//DESKTOP
+
+
+
 // JavaScript source code
 var game = new Phaser.Game(405, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
@@ -31,14 +35,15 @@ function preload() {
     game.load.spritesheet('gball', 'assets/gball.png', BALL_SIZE, BALL_SIZE);//green
     game.load.spritesheet('bball', 'assets/bball.png', BALL_SIZE, BALL_SIZE);//blue
     game.load.spritesheet('pball', 'assets/pball.png', BALL_SIZE, BALL_SIZE);//purple
+    game.load.image('sky', 'assets/skies/sunset.png');
 
     game.load.image('statBar', 'assets/statusbar.png');
-
+   
     game.load.spritesheet('btn_change', 'assets/buttons/button_sprite_sheet.png', 193, 71);
     game.load.spritesheet('btn_option', 'assets/buttons/plus.png', 200, 200);
     game.load.image('background', 'assets/misc/starfield.jpg');
-    game.load.audio('backgroundMusic', ['assets/audio/music.mp3', 'assets/audio/music.ogg']);
-    game.load.audio('bombSound', ['assets/audio/BlowBubble.mp3', 'assets/audio/BlowBubble.ogg']);
+    game.load.audio('backgroundMusic', ['assets/music.mp3', 'assets/music.ogg']);
+    game.load.audio('bombSound', ['assets/BlowBubble.mp3', 'assets/BlowBubble.ogg']);
     game.load.bitmapFont('desyrel', 'assets/fonts/bitmapFonts/desyrel.png', 'assets/fonts/bitmapFonts/desyrel.xml');
 
 }
@@ -56,8 +61,8 @@ function create() {
     btn_change = game.add.button(game.world.centerX - 95, 405, 'btn_change', actionOnClick, this, 0);
     nameText = game.add.bitmapText(30, 150, 'desyrel', 'Pacircle', 100);
     scoreText = game.add.bitmapText(10, 10, 'desyrel', 'Score: ', 24);
-    backgroundMusic = game.add.audio('backgroundMusic', 1, true);
-    bombSound = game.add.audio('bombSound', 1, true);
+    backgroundMusic = game.add.audio('backgroundMusic', 1, true); 
+    bombSound = game.add.audio('bombSound', 1, true); 
     statusBar = new StatusBar();//status bar
     statusBar.scale.setTo(0.4, 0.4);
     statusBar.setPercent(status_sum);
@@ -86,6 +91,7 @@ function update() {
 function actionOnClick() {
 
     background.visible = !background.visible;
+    
     btn_change.destroy();
     nameText.destroy();
     game.time.events.repeat(Phaser.Timer.SECOND / 10, 100, createBall, this);
@@ -101,17 +107,16 @@ function ballKilled() {
     if (selectedBall.length > 1) {
         setScore();
         for (var i = 0; i < selectedBall.length ; i++) {
-            //console.log("delete : " + " " + selectedBall[i].sprite.position + "\n" + selectedBall[i].sprite.key);
+            console.log("delete : " + " " + selectedBall[i].sprite.position + "\n" + selectedBall[i].sprite.key);
             selectedBall[i].sprite.destroy();
             bombSound.play();
             // Not sure if we need this : balls.remove(selectedBall[i]);
         }
         status_sum += selectedBall.length;
         statusBar.setPercent(status_sum);
-        //if (status_sum == 200) {
-        //    
-        //}
+        //if (status_sum === 200) {
 
+        //}
         selectedBall.splice(0, selectedBall.length);
         ballPosition.splice(0, ballPosition.length);
         ballPosition = createArray((game.height / BALL_SIZE) + 1, (game.width / BALL_SIZE) + 1);
@@ -201,7 +206,7 @@ function findColor(b)
         canClick = false;
         console.log("init in find color");
         initPositionArray();
-        //sleep(1000);
+        sleep(1000);
         canClick = true;
         isKill = false;
     }
